@@ -26,6 +26,12 @@ io.on("connection", (socket) => {
         io.to(data.room).emit("recieve-message", data)
     })
 
+    socket.on("room-join", (room) => {
+        console.log("Connected to the ",room)
+        socket.join(room)
+        //io.to(data.room).emit("recieve-message", data)
+    })
+
     socket.on("disconnect", () => {
         console.log('disconnected')
     })

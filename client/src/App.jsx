@@ -15,10 +15,10 @@ function App() {
   const socket = useMemo(() => io('http://localhost:3000'), [])
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
+  const [socketId, setSocketId] = useState("");
+  const [roomName, setRoomName] = useState("");
+
   const [messages, setMessages] = useState([]);
-
-
-  console.log(messages)
 
 
   const handleSubmit = (e) => {
@@ -26,14 +26,20 @@ function App() {
     socket.emit("message", { message, room })
     setMessage("")
   }
+
+  const joinRoomHandler = (e) => {
+    e.preventDefault();
+    socket.emit("room-join", roomName)
+    setRoomName("")
+  }
   useEffect(() => {
     socket.on("connect", () => {
-      console.log('socket.id', socket.id)
+      //console.log('socket.id', socket.id)
+      setSocketId(socket.id)
     })
 
     socket.on("recieve-message", (data) => {
       setMessages((messages) => [...messages, data.message])
-      //setMessages.push(data.message)
     })
 
     return () => {
@@ -44,11 +50,10 @@ function App() {
     <Container maxWidth="sm">
       <Box sx={{ height: 200 }} />
       <Typography variant="h6" component="div" gutterBottom>
-        {/* {socketID} */}
-        Welcome
+        {socketId}
       </Typography>
 
-      {/* <form onSubmit={joinRoomHandler}>
+      <form onSubmit={joinRoomHandler}>
         <h5>Join Room</h5>
         <TextField
           value={roomName}
@@ -60,7 +65,7 @@ function App() {
         <Button type="submit" variant="contained" color="primary">
           Join
         </Button>
-      </form> */}
+      </form>
 
       <form onSubmit={handleSubmit}>
         <TextField
