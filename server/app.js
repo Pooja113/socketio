@@ -22,11 +22,12 @@ io.on("connection", (socket) => {
     console.log('connected', socket.id)
 
     socket.on("message", (data) => {
-        io.emit("recieve-message", data)
+        //io.emit("recieve-message", data)
+        io.to(data.room).emit("recieve-message", data)
     })
 
-    socket.on("disconnect", ()=>{
-        console.log('disconnected', disconnected)
+    socket.on("disconnect", () => {
+        console.log('disconnected')
     })
 })
 

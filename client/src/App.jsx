@@ -14,10 +14,16 @@ import { useState } from 'react';
 function App() {
   const socket = useMemo(() => io('http://localhost:3000'), [])
   const [message, setMessage] = useState("");
+  const [room, setRoom] = useState("");
+  const [messages, setMessages] = useState([]);
+
+
+  console.log(messages)
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    socket.emit("message", message)
+    socket.emit("message", { message, room })
     setMessage("")
   }
   useEffect(() => {
@@ -26,16 +32,17 @@ function App() {
     })
 
     socket.on("recieve-message", (data) => {
-      console.log('data', data)
+      setMessages((messages) => [...messages, data.message])
+      //setMessages.push(data.message)
     })
 
-    return ()=>{
+    return () => {
       socket.disconnect()
     }
   }, [])
   return (
     <Container maxWidth="sm">
-      <Box sx={{ height: 500 }} />
+      <Box sx={{ height: 200 }} />
       <Typography variant="h6" component="div" gutterBottom>
         {/* {socketID} */}
         Welcome
@@ -63,24 +70,24 @@ function App() {
           label="Message"
           variant="outlined"
         />
-        {/* <TextField
+        <TextField
           value={room}
           onChange={(e) => setRoom(e.target.value)}
           id="outlined-basic"
           label="Room"
           variant="outlined"
-        /> */}
+        />
         <Button type="submit" variant="contained" color="primary">
           Send
         </Button>
       </form>
 
       <Stack>
-        {/* {messages.map((m, i) => (
+        {messages.map((m, i) => (
           <Typography key={i} variant="h6" component="div" gutterBottom>
             {m}
           </Typography>
-        ))} */}
+        ))}
       </Stack>
     </Container>
   )
