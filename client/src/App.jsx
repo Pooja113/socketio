@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 
 function App() {
-  const socket = useMemo(() => io('http://localhost:3000'), [])
+  const socket = useMemo(() => io('http://localhost:5000'), [])
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
   const [socketId, setSocketId] = useState("");
@@ -86,6 +86,9 @@ function App() {
           Send
         </Button>
       </form>
+      <video id="videoPlayer" width="80%" controls muted="muted" autoplay>
+        <source src="/video/stream" type="video/mp4" />
+      </video>
 
       <Stack>
         {messages.map((m, i) => (
