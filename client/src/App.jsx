@@ -86,8 +86,8 @@ function App() {
           Send
         </Button>
       </form>
-      <video id="videoPlayer" width="80%" controls muted="muted" autoplay>
-        <source src="/video/stream" type="video/mp4" />
+      <video id="videoPlayer" width="80%" controls>
+        <source src="http://localhost:5000/api/video/stream" type="video/mp4" />
       </video>
 
       <Stack>
